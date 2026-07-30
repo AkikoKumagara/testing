@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="org.rockbox"
+	android:versionCode="1"
+	android:versionName="1.0"
+	android:installLocation="auto">
+	<application android:icon="@drawable/launcher" 
+		android:label="@string/app_name" 
+		android:debuggable="true">
+
+		<activity android:name=".RockboxActivity"
+			android:launchMode="singleTask"
+			android:label="@string/app_name"
+			android:screenOrientation="landscape"
+			android:configChanges="orientation|keyboardHidden" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>		
+
+		<activity android:name=".Y2BootChoiceActivity"
+			android:launchMode="singleTask"
+			android:label="Y2 Boot"
+			android:screenOrientation="landscape"
+			android:configChanges="orientation|keyboardHidden" />
+
+		<activity android:name=".Y2BootSettingsActivity"
+			android:launchMode="singleTask"
+			android:label="Boot Settings"
+			android:screenOrientation="landscape"
+			android:configChanges="orientation|keyboardHidden" />
+
+		<activity android:name=".Y2BootKeyCaptureActivity"
+			android:launchMode="singleTask"
+			android:label="Y2 Boot Keys"
+			android:screenOrientation="landscape"
+			android:configChanges="orientation|keyboardHidden" />
+
+		<activity android:name=".Y2FirmwareHomeActivity"
+			android:launchMode="singleTask"
+			android:label="Y2 Firmware Route"
+			android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+			android:screenOrientation="landscape"
+			android:excludeFromRecents="true"
+			android:configChanges="orientation|keyboardHidden">
+			<intent-filter android:priority="1000">
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.HOME" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+
+		<service android:name=".RockboxService">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<action android:name="android.intent.action.MEDIA_BUTTON" />
+				<action android:name="org.rockbox.ResendTrackUpdateInfo" />
+			</intent-filter>
+    </service>
+
+		<service
+			android:name=".Y2BootLaunchService"
+			android:enabled="true"
+			android:exported="false" />
+
+		<service
+			android:name=".Y2RouteShieldService"
+			android:enabled="true"
+			android:exported="false"
+			android:process=":route" />
+
+		<provider
+			android:name=".Y2BootRouteProvider"
+			android:authorities="org.rockbox.y2.bootroutes"
+			android:enabled="true"
+			android:exported="true"
+			android:process=":bootroutes" />
+
+		<receiver
+			android:name=".Y2BootReceiver"
+			android:enabled="false"
+			android:exported="false" />
+
+		<receiver
+			android:name=".Y2FirmwareRouteReceiver"
+			android:enabled="true"
+			android:exported="true"
+			android:process=":route">
+			<intent-filter>
+				<action android:name="org.rockbox.y2.FIRMWARE_ROUTE" />
+				<action android:name="android.intent.action.SCREEN_ON" />
+			</intent-filter>
+		</receiver>
+
+		<receiver
+			android:name=".Y2StorageReceiver"
+			android:enabled="true"
+			android:exported="true"
+			android:process=":route">
+			<intent-filter>
+				<action android:name="android.intent.action.MEDIA_MOUNTED" />
+				<action android:name="android.intent.action.MEDIA_SCANNER_FINISHED" />
+				<action android:name="android.intent.action.MEDIA_UNMOUNTED" />
+				<action android:name="android.intent.action.MEDIA_EJECT" />
+				<action android:name="android.intent.action.MEDIA_SHARED" />
+				<data android:scheme="file" />
+			</intent-filter>
+			<intent-filter>
+				<action android:name="android.intent.action.UMS_CONNECTED" />
+				<action android:name="android.intent.action.UMS_DISCONNECTED" />
+				<action android:name="com.innioasis.y1.PRE_MOUNT_SDCARD" />
+			</intent-filter>
+		</receiver>
+
+		<receiver android:name=".Helper.MediaButtonReceiver$MediaReceiver"
+			android:enabled="true"
+			android:exported="true">
+			<intent-filter>
+				<action android:name="android.intent.action.MEDIA_BUTTON" />
+			</intent-filter>
+		</receiver>
+
+    <!-- Widgets -->
+    <receiver android:name=".widgets.RockboxWidgetProvider4x1"
+              android:label="@string/appwidget_label_4x1">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+        <action android:name="org.rockbox.TrackUpdateInfo" />
+        <action android:name="org.rockbox.TrackFinish" />
+        <action android:name="org.rockbox.UpdateState" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider"
+                 android:resource="@xml/appwidget_provider_4x1" />
+    </receiver>
+
+    <receiver android:name=".widgets.RockboxWidgetProvider2x2"
+              android:label="@string/appwidget_label_2x2">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+        <action android:name="org.rockbox.TrackUpdateInfo" />
+        <action android:name="org.rockbox.TrackFinish" />
+        <action android:name="org.rockbox.UpdateState" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider"
+                 android:resource="@xml/appwidget_provider_2x2" />
+    </receiver>
+
+    <receiver android:name=".widgets.RockboxWidgetProvider3x3"
+              android:label="@string/appwidget_label_3x3">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+        <action android:name="org.rockbox.TrackUpdateInfo" />
+        <action android:name="org.rockbox.TrackFinish" />
+        <action android:name="org.rockbox.UpdateState" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider"
+                 android:resource="@xml/appwidget_provider_3x3" />
+    </receiver>
+    <!-- Widget configuration -->
+    <activity android:name=".widgets.RockboxWidgetConfigure">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+      </intent-filter>
+    </activity>
+	
+	</application>
+
+	<uses-sdk android:minSdkVersion="5" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+	<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+	<uses-permission android:name="android.permission.SET_PREFERRED_APPLICATIONS" />
+</manifest>
